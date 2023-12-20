@@ -18,10 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: false,
-
         primarySwatch: Colors.blue,
       ),
-      home: polyline(),
+      home: Loginpage(),
     );
   }
 }

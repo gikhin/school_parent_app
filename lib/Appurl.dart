@@ -18,4 +18,13 @@ class AppUrl{
 
   static const String std_register = '$baseUrl/student/s_register';
 
+  static const String notification = '$baseUrl/parent/get_notification';
+
+  static const String readNotification = '$baseUrl/parent/notification';
+
+  static const String editchild = '$baseUrl/parent/edit';
+
+  static const String singleDriverDetails = '$baseUrl/driver/single_detail';
+
+
 }

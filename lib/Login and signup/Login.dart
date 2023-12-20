@@ -78,7 +78,7 @@ class _LoginpageState extends State<Loginpage> {
             TextButton(onPressed: () {
 
             }, child: TextButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage(),));
+             loginUser();
 
             }, child: Text('Dont have an account?'))),
             Column(
@@ -86,7 +86,6 @@ class _LoginpageState extends State<Loginpage> {
                 Text('Sign in with google'),
                 SizedBox(height: 50,
                   child: IconButton(onPressed: () {
-
                   }, icon: Image.network('https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png')),
                 ),
               ],

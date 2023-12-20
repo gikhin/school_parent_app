@@ -10,12 +10,12 @@ import 'package:untitled25/Appurl.dart';
 import '../constants.dart';
 import 'Mapbox.dart';
 
-class polyline extends StatefulWidget {
+class polylineNew extends StatefulWidget {
   @override
-  _polylineState createState() => _polylineState();
+  _polylineNewState createState() => _polylineNewState();
 }
 
-class _polylineState extends State<polyline> {
+class _polylineNewState extends State<polylineNew> {
   MapController mapController = MapController();
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
@@ -55,6 +55,52 @@ class _polylineState extends State<polyline> {
     }
   }
   //end of functions.....
+
+  void _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      setState(() {
+        startPoint = LatLng(position.latitude, position.longitude);
+      });
+
+      _getPolyline();
+    } catch (e) {
+      print('Error getting location: $e');
+
+    }
+  }
+
+  void _getPolyline() async {
+    try {
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        'pk.eyJ1IjoiY2hhYXZpZTR1YXQiLCJhIjoiY2t3b3NleGMyMDV6cTJ2cG10Y2Rma3dmYyJ9.QfqK1jEXt-aLBf-wwuYYDw',
+        PointLatLng(startPoint.latitude, startPoint.longitude),
+        PointLatLng(endPoint.latitude, endPoint.longitude),
+        travelMode: TravelMode.driving,
+      );
+
+      if (result.points.isNotEmpty) {
+        result.points.forEach((PointLatLng point) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        });
+
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error getting polyline: $e');
+
+      // Handle error, show a message to the user, etc.
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,49 +172,4 @@ class _polylineState extends State<polyline> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
-  }
-
-  void _getCurrentLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      setState(() {
-        startPoint = LatLng(position.latitude, position.longitude);
-      });
-
-      _getPolyline();
-    } catch (e) {
-      print('Error getting location: $e');
-
-    }
-  }
-
-  void _getPolyline() async {
-    try {
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'pk.eyJ1IjoiY2hhYXZpZTR1YXQiLCJhIjoiY2t3b3NleGMyMDV6cTJ2cG10Y2Rma3dmYyJ9.QfqK1jEXt-aLBf-wwuYYDw',
-        PointLatLng(startPoint.latitude, startPoint.longitude),
-        PointLatLng(endPoint.latitude, endPoint.longitude),
-        travelMode: TravelMode.driving,
-      );
-
-      if (result.points.isNotEmpty) {
-        result.points.forEach((PointLatLng point) {
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-        });
-
-        setState(() {});
-      }
-    } catch (e) {
-      print('Error getting polyline: $e');
-
-      // Handle error, show a message to the user, etc.
-    }
-  }
 }
