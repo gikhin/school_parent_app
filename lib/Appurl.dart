@@ -1,5 +1,7 @@
 class AppUrl{
 
+  static const String gKey                   = "AIzaSyDHRPXjG2JvJmgU2PedeuXeWRIkfNu6xRg";
+
   static const String baseUrl = 'http://52.66.145.37:3005';
 
   static const String signUp = '$baseUrl/parent/register';
@@ -8,7 +10,7 @@ class AppUrl{
 
    static const String stdParentDetails = '$baseUrl/parent/details';
 
-  static const String stdDetails = '$baseUrl/parent/student_data';
+  static const String  stdDetails = '$baseUrl/parent/student_data';
 
   static const String parentTripDetails = '$baseUrl/parent/trip_detail';
 
@@ -25,6 +27,8 @@ class AppUrl{
   static const String editchild = '$baseUrl/parent/edit';
 
   static const String singleDriverDetails = '$baseUrl/driver/single_detail';
+  //google sign in
+  static const String checkEmail = '$baseUrl/parent/google_Signin';
 
 
 }

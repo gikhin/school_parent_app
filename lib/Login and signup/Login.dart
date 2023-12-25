@@ -44,14 +44,17 @@ class _LoginpageState extends State<Loginpage> {
         var responsedata = jsonDecode(response.body);
         print('uuuuuuu${responsedata['data']['id']}');
         Utils.userLoggedId = int.parse(responsedata['data']['id'].toString());
+        Utils.userLoggedNewID = responsedata['data']['id'].toString();
+        Utils.userLoggedName = responsedata['data']['name'].toString();
         print('aaaaa${Utils.userLoggedId}');
+        print('aaaaa${Utils.userLoggedName}');
 
         print(result);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homepage()));
         Fluttertoast.showToast(msg: 'Welcome back!.');
 
       } else {
-
+        Fluttertoast.showToast(msg: 'User ID Or Password Is Incorrect.');
         print('Error - Status Code: ${response.statusCode}');
         print('Error - Response Body: ${response.body}');
       }
@@ -64,34 +67,39 @@ class _LoginpageState extends State<Loginpage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:       Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MyTextFieldWidget(labelName: 'Email or username', controller: userName, validator: (){},),
-            MyTextFieldWidget(labelName: 'Password', controller: password, validator: (){},),
-            MyButtonWidget(buttonName: 'Login', bgColor: openScanner, onPressed: (){
-              loginUser();
-            }),
-
-            TextButton(onPressed: () {
-
-            }, child: TextButton(onPressed: () {
-             loginUser();
-
-            }, child: Text('Dont have an account?'))),
-            Column(
-              children: [
-                Text('Sign in with google'),
-                SizedBox(height: 50,
-                  child: IconButton(onPressed: () {
-                  }, icon: Image.network('https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png')),
-                ),
-              ],
-            )
-          ],
-
+    return Scaffold(backgroundColor: Colors.white,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 30.0,),
+              CircleAvatar(backgroundColor: Colors.transparent,radius: 150,child: Image.asset('assets/login.jpg')),
+              Text('Login',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,fontFamily: 'QuickSand'),),
+              MyTextFieldWidget(labelName: 'Email Id', controller: userName, validator: (){},),
+              MyTextFieldWidget(labelName: 'Password', controller: password, validator: (){},),
+              MyButtonWidget(buttonName: 'Login', bgColor: openScanner, onPressed: (){
+                loginUser();
+              }),
+          
+              TextButton(onPressed: () {
+              }, child: TextButton(onPressed: () {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage(),));
+          
+              }, child: Text('Dont have an account?'))),
+              Column(
+                children: [
+                  Text('Sign in with google'),
+                  SizedBox(height: 50,
+                    child: IconButton(onPressed: () {
+                      Utils.signInWithGoogle(context);
+                    }, icon: Image.network('https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png')),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

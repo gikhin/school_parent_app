@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled25/Appurl.dart';
 import 'package:untitled25/Utils/utils.dart';
@@ -94,6 +95,7 @@ class _ProfileState extends State<Profile> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         print('heeeeeeeee$data');
+
         // if (!data['error'] && data['success']) {
         //
         //   print('Data updated successfully');
@@ -114,7 +116,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: Icon(Icons.menu, color: textColor1),
@@ -143,8 +145,15 @@ class _ProfileState extends State<Profile> {
             children: [
               SizedBox(height: 20),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircleAvatar(radius: 45),
+                  CircleAvatar(radius: 45,
+                    backgroundImage: NetworkImage(Utils.photUrl == null ?
+                    'https://images.unsplash.com/photo-1480455624313-e'
+                        '29b44bbfde1?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid='
+                        'M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWFsZSUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D':Utils.photUrl.toString(),
+                    ),
+                  ),
                   SizedBox(
                     width: 225,
                     child: MyTextFieldWidget(
@@ -189,17 +198,21 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: 52,
                       width: 156,
-                      child: MyButtonWidget(
-                        buttonName: "Log out",
-                        bgColor: pinkColor,
+                      child: OutlinedButton(
                         onPressed: () {
+                          Utils.signoutgoogle(context);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => Loginpage()),
                           );
                         },
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: pinkColor),
+                        ),
+                        child: Text('Log Out', style: TextStyle(color: pinkColor)),
                       ),
                     ),
+
                     SizedBox(
                       height: 52,
                       width: 156,

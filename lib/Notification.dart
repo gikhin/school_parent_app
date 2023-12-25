@@ -21,50 +21,64 @@ class _NotificationPageState extends State<NotificationPage> {
 
   var notificationData = [];
 
+  bool isLoading = true;
+
 
   var notification;
   @override
   void initState() {
     super.initState();
-    fetchMessages();
+    // fetchMessages();
     getNotifications();
   }
 
   Future<void> getNotifications() async {
-    final url = Uri.parse('http://52.66.145.37:3005/parent/get_notification');
+    print('get notification called.....');
+    print(Utils.userLoggedId);
+    isLoading = false;
+    final url = Uri.parse(AppUrl.notification);
     final data = {
         "parent_id": Utils.userLoggedId
     };
     final response = await http.post(url,body: jsonEncode(data));
+    print(jsonEncode(data));
 
     if(response.statusCode == 200){
       var responseData = jsonDecode(response.body);
+      print('0000000000000');
+      print(responseData);
       setState(() {
+        isLoading = true;
         notificationData.clear();
         notificationData.add(responseData['data']);
         print('notificationdata is:${notificationData}');
       });
+    }else{
+      setState(() {
+        isLoading = false;
+        print('else is working...');
+      });
     }
   }
 
-  Future<void> fetchMessages() async {
-    final url = Uri.parse("http://52.66.145.37:3005/parent/get_notification");
-    final data = {"parent_id": Utils.userLoggedId};
-
-    final response = await http.post(url, body: json.encode(data));
-
-    if (response.statusCode == 200) {
-      apiResponse = List<Map<String, dynamic>>.from(json.decode(response.body)["data"]);
-
-      if (apiResponse.isNotEmpty) {
-        final List<String> messagesList = apiResponse.map((item) => item["message"].toString()).toList();
-
-        setState(() {
-          messages = messagesList;
-        });
-      }
-    }
-  }
+  // Future<void> fetchMessages() async {
+  //   final url = Uri.parse("http://52.66.145.37:3005/parent/get_notification");
+  //   final data = {"notification_id": Utils.userLoggedId};
+  //
+  //   final response = await http.post(url, body: json.encode(data));
+  //
+  //   if (response.statusCode == 200) {
+  //     apiResponse = List<Map<String, dynamic>>.from(json.decode(response.body)["data"]);
+  //
+  //     if (apiResponse.isNotEmpty) {
+  //       final List<String> messagesList = apiResponse.map((item) => item["message"].toString()).toList();
+  //
+  //       setState(() {
+  //         messages = messagesList;
+  //       });
+  //     }
+  //   }
+  // }
 
 
 
@@ -145,11 +159,11 @@ class _NotificationPageState extends State<NotificationPage> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
               },
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1480455624313-e'
-                      '29b44bbfde1?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid='
-                      'M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWFsZSUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D',
+              child:CircleAvatar(
+                backgroundImage: NetworkImage(Utils.photUrl == null ?
+                'https://images.unsplash.com/photo-1480455624313-e'
+                    '29b44bbfde1?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid='
+                    'M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWFsZSUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D':Utils.photUrl.toString(),
                 ),
               ),
             )
@@ -157,7 +171,7 @@ class _NotificationPageState extends State<NotificationPage> {
         ],
         elevation: 0,
       ),
-     body: ListView.builder(
+     body:isLoading == false? Center(child: CircularProgressIndicator(),) :ListView.builder(
       itemCount: notificationData[0].length,
       itemBuilder: (context, index) {
         // final reversedIndex = messages.length - 1 - index;
