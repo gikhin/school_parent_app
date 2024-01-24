@@ -17,6 +17,8 @@ Color lightWhite = Color.fromRGBO(0, 0, 0, 0.11);
 
 Color openScanner = Color.fromRGBO(118, 120, 237, 1);
 
+Color openScannerlight = Color.fromRGBO(187, 188, 250, 1.0);
+
 Color fillColor = Color.fromRGBO(217, 217, 217, 0.84);
 
 Color addNow = Color.fromRGBO(0, 2, 112, 1);

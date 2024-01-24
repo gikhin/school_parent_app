@@ -17,6 +17,11 @@ class Utils{
   static String? photUrl;
   static String? userLoggedEmail;
 
+  static int notificationCount = 0;
+
+  static Map<String,dynamic> mynotifications = {};
+
+
   static toastMessage(String message){
     Fluttertoast.showToast(
         msg: message,

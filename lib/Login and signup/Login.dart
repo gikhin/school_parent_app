@@ -67,7 +67,9 @@ class _LoginpageState extends State<Loginpage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -94,7 +96,7 @@ class _LoginpageState extends State<Loginpage> {
                   SizedBox(height: 50,
                     child: IconButton(onPressed: () {
                       Utils.signInWithGoogle(context);
-                    }, icon: Image.network('https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png')),
+                    }, icon: Image.asset('assets/googleic.png')),
                   ),
                 ],
               )

@@ -10,6 +10,7 @@ import 'package:untitled25/Appurl.dart';
 import '../constants.dart';
 import 'Mapbox.dart';
 
+
 class polyline extends StatefulWidget {
   @override
   _polylineState createState() => _polylineState();
@@ -86,15 +87,15 @@ class _polylineState extends State<polyline> {
               'id': 'mapbox.satellite',
             },
           ),
-          PolylineLayer(
-            polylines: [
-              Polyline(
-                points: polylineCoordinates,
-                strokeWidth: 6.0,
-                color: Colors.blue,
-              ),
-            ],
-          ),
+          // PolylineLayer(
+          //   polylines: [
+          //     Polyline(
+          //       points: polylineCoordinates,
+          //       strokeWidth: 6.0,
+          //       color: Colors.blue,
+          //     ),
+          //   ],
+          // ),
           MarkerLayer(
             markers: [
               Marker(

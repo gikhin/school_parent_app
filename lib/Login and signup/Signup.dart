@@ -63,7 +63,7 @@ class _SignupPageState extends State<SignupPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomInset: true,
       body:   SafeArea(
         child: Center(
           child: SingleChildScrollView(

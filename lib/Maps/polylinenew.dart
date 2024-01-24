@@ -11,9 +11,10 @@ import '../constants.dart';
 import 'Mapbox.dart';
 
 class polylineNew extends StatefulWidget {
+  int? driver_id;
   double lat;
   double long;
-  polylineNew({required this.lat,required this.long,Key? key}) : super(key: key);
+  polylineNew({this.driver_id,required this.lat,required this.long,Key? key}) : super(key: key);
   @override
   _polylineNewState createState() => _polylineNewState();
 }
@@ -21,18 +22,33 @@ class polylineNew extends StatefulWidget {
 class _polylineNewState extends State<polylineNew> {
   MapController mapController = MapController();
   PolylinePoints polylinePoints = PolylinePoints();
-  List<LatLng> polylineCoordinates = [
-    LatLng(11.27964, 75.7817756),
-    LatLng(11.2756921, 75.7802376)
-  ];
-  LatLng startPoint = LatLng(11.2795266, 75.7817756);
+  late LatLng startPoint;
+  var driverLati;
+  var driverLongi;
+
+  @override
+  void initState() {
+    super.initState();
+    // endPoint = LatLng(widget.lat, widget.long);
+    startPoint = LatLng(widget.lat, widget.long);
+    _getCurrentLocation();
+    print("Laaaaaaat${widget.driver_id}");
+    // getDriverData();
+  }
+
+  // List<LatLng> polylineCoordinates = [
+  //   LatLng(11.27964, 75.7817756),
+  //   LatLng(11.2756921, 75.7802376)
+  // ];
+  // LatLng startPoint = LatLng(11.2795266, 75.7817756);
   // LatLng? startPoint;
   // LatLng? endPoint;
-  LatLng endPoint = LatLng(11.27964, 75.7817756);
+  // LatLng endPoint = LatLng(11.27964, 75.7817756);
 //////////
   Future<void> getDriverData() async {
+    print('this called...${widget.driver_id}');
     Map<String, dynamic> data = {
-      "id":0000
+      "id":widget.driver_id
     };
     try {
       // Encode the data to JSON
@@ -46,11 +62,19 @@ class _polylineNewState extends State<polylineNew> {
         },
         body: jsonData,
       );
+      print('ppppp:$jsonData');
 
       // Check the response status
       if (response.statusCode == 200) {
+        print('Qaaaaa${jsonDecode(response.body)}');
+
+        var responseData = jsonDecode(response.body);
+        print('Daaaaa${responseData[0]['longitude']}');
+        // driverLati = LatLng(responseData['data']['latitude'],responseData['data']['longitude'] );
+        print("Teeee${driverLati}");
         // Request successful, do something with the response
         print('POST request successful');
+        print('driverid${widget.driver_id}');
         print('Response: ${response.body}');
       } else {
         // Request failed, handle the error
@@ -65,51 +89,47 @@ class _polylineNewState extends State<polylineNew> {
   //end of functions.....
 
   Future<void> _getCurrentLocation() async {
+    print('Calleed..');
     try {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      // setState(() {
+      setState(() {
         startPoint = LatLng(position.latitude, position.longitude);
         print("current location is: ${startPoint}");
-      // });
+      });
 
 
-      _getPolyline();
+      // _getPolyline();
     } catch (e) {
       print('Error getting location: $e');
     }
   }
 
-  void _getPolyline() async {
-    try {
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'pk.eyJ1IjoiY2hhYXZpZTR1YXQiLCJhIjoiY2t3b3NleGMyMDV6cTJ2cG10Y2Rma3dmYyJ9.QfqK1jEXt-aLBf-wwuYYDw',
-        PointLatLng(startPoint.latitude, startPoint.longitude),
-        PointLatLng(endPoint.latitude, endPoint.longitude),
-        travelMode: TravelMode.driving,
-      );
-      if (result.points.isNotEmpty) {
-        result.points.forEach((PointLatLng point) {
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-          print(polylineCoordinates);
-        });
-        setState(() {});
-      }
-    } catch (e) {
-      print('Error getting polyline: $e');
+  // void _getPolyline() async {
+  //   try {
+  //     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //       'pk.eyJ1IjoiY2hhYXZpZTR1YXQiLCJhIjoiY2t3b3NleGMyMDV6cTJ2cG10Y2Rma3dmYyJ9.QfqK1jEXt-aLBf-wwuYYDw',
+  //       PointLatLng(startPoint.latitude, startPoint.longitude),
+  //       PointLatLng(endPoint.latitude, endPoint.longitude),
+  //       travelMode: TravelMode.driving,
+  //     );
+  //     if (result.points.isNotEmpty) {
+  //       result.points.forEach((PointLatLng point) {
+  //         // polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //         // print(polylineCoordinates);
+  //       });
+  //       setState(() {});
+  //     }
+  //   } catch (e) {
+  //     print('Error getting polyline: $e');
+  //
+  //     // Handle error, show a message to the user, etc.
+  //   }
+  // }
 
-      // Handle error, show a message to the user, etc.
-    }
-  }
 
 
-  @override
-  void initState() {
-    super.initState();
-    endPoint = LatLng(widget.lat, widget.long);
-    _getCurrentLocation();
-  }
 
 
   @override
@@ -127,7 +147,7 @@ class _polylineNewState extends State<polylineNew> {
         elevation: 0,
       ),
       body: FutureBuilder(
-        future: _getCurrentLocation(),
+        future: getDriverData(),
         builder: (context,index) {
           return FlutterMap(
             mapController: mapController,
@@ -145,21 +165,21 @@ class _polylineNewState extends State<polylineNew> {
                   'id': 'mapbox.satellite',
                 },
               ),
-              PolylineLayer(
-                polylines: [
-                  Polyline(
-                    points: polylineCoordinates,
-                    strokeWidth: 6.0,
-                    color: Colors.blue,
-                  ),
-                ],
-              ),
+              // PolylineLayer(
+              //   polylines: [
+              //     Polyline(
+              //       points: polylineCoordinates,
+              //       strokeWidth: 6.0,
+              //       color: Colors.blue,
+              //     ),
+              //   ],
+              // ),
               MarkerLayer(
                 markers: [
                   Marker(
                     width: 40.0,
                     height: 40.0,
-                    point: LatLng(11.2849971, 75.7817756) ?? LatLng(0, 0),
+                    point: LatLng(widget.lat, widget.long) ?? LatLng(0, 0),
                     builder: (ctx) => Container(
                       child: Icon(
                         Icons.location_on,
@@ -167,17 +187,17 @@ class _polylineNewState extends State<polylineNew> {
                       ),
                     ),
                   ),
-                  Marker(
-                    width: 40.0,
-                    height: 40.0,
-                    point: endPoint,
-                    builder: (ctx) => Container(
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
+                  // Marker(
+                  //   width: 40.0,
+                  //   height: 40.0,
+                  //   point: endPoint,
+                  //   builder: (ctx) => Container(
+                  //     child: Icon(
+                  //       Icons.location_on,
+                  //       color: Colors.green,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],

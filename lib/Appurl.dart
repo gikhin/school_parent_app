@@ -22,11 +22,25 @@ class AppUrl{
 
   static const String notification = '$baseUrl/parent/get_notification';
 
+  static const String deletenotification = '$baseUrl/parent/delete_notification';
+
   static const String readNotification = '$baseUrl/parent/notification';
 
   static const String editchild = '$baseUrl/parent/edit';
 
+  static const String deleteSTd = '$baseUrl/parent/delete';
+
+  static const String findingVehicleno = '$baseUrl/parent/get_vehicleno';
+
+
+
   static const String singleDriverDetails = '$baseUrl/driver/single_detail';
+
+  static const String completeDrivers = '$baseUrl/driver/complete_driver';
+
+
+
+
   //google sign in
   static const String checkEmail = '$baseUrl/parent/google_Signin';
 
