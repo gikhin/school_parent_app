@@ -615,17 +615,20 @@ class _HomepageState extends State<Homepage> {
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                CircleAvatar(
-                                                                  radius: 35.0,
-                                                                  child: Text(
-                                                                    '${respData[0]['studentWithDriverData'][index]['studentData']['name'].toString().toUpperCase().trim().substring(0, 1)}',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          18,
+                                                                Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: CircleAvatar(
+                                                                    radius: 32.0,
+                                                                    child: Text(
+                                                                      '${respData[0]['studentWithDriverData'][index]['studentData']['name'].toString().toUpperCase().trim().substring(0, 1)}',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize:
+                                                                            18,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -645,142 +648,252 @@ class _HomepageState extends State<Homepage> {
                                                                       Padding(
                                                                         padding: const EdgeInsets.all(8.0),
                                                                         child:
-                                                                            Text('${respData[0]['studentWithDriverData'][index]['studentData']['name'].toString().toUpperCase()}', style:
-                                                                              TextStyle(fontWeight: FontWeight.bold),
-                                                                        ),
+                                                                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Text('${respData[0]['studentWithDriverData'][index]['studentData']['name'].toString().toUpperCase()}', style:
+                                                                                  TextStyle(fontWeight: FontWeight.bold),
+                                                                                                                                                        ),
+                                                                                IconButton(
+                                                                                  onPressed:
+                                                                                      () async {
+                                                                                    Navigator.push(
+                                                                                      context,
+                                                                                      MaterialPageRoute(
+                                                                                        builder: ((context) {
+                                                                                          return Center(
+                                                                                            child: RepaintBoundary(
+                                                                                              key: _qrKey,
+                                                                                              child: QrImageView(
+                                                                                                version: QrVersions.auto,
+                                                                                                data: "${respData[0]['studentWithDriverData'][index]['studentData']['id']}",
+                                                                                                backgroundColor: Colors.white,
+                                                                                                gapless: true,
+                                                                                                errorStateBuilder: (ctx, err) {
+                                                                                                  return const Center(
+                                                                                                    child: Text(
+                                                                                                      'Something went wrong!!!',
+                                                                                                      textAlign: TextAlign.center,
+                                                                                                    ),
+                                                                                                  );
+                                                                                                },
+                                                                                              ),
+                                                                                            ),
+                                                                                          );
+                                                                                        }),
+                                                                                      ),
+                                                                                    );
+                                                                                  },
+                                                                                  icon:
+                                                                                  Icon(Icons.qr_code_2, color: Colors.black),
+                                                                                ),
+                                                                                // IconButton(
+                                                                                //   onPressed:
+                                                                                //       _captureAndSavePng,
+                                                                                //   icon:
+                                                                                //       Icon(Icons.download),
+                                                                                // ),
+                                                                                // IconButton(
+                                                                                //   onPressed: () async {
+                                                                                //     print('Fff');
+                                                                                //     _saveLocalImage();
+                                                                                //     // // Get the path to the app's document directory
+                                                                                //     // String directory = (await getApplicationDocumentsDirectory()).path;
+                                                                                //     // print('sss:$directory');
+                                                                                //     //
+                                                                                //     // // Combine the directory path with a unique filename
+                                                                                //     // String filePath = '/storage/emulated/0/Download/qr_code.png';
+                                                                                //     //
+                                                                                //     // String studentId = respData[0]['studentWithDriverData'][index]['studentData']['id'].toString();
+                                                                                //     //
+                                                                                //     // try {
+                                                                                //     //   int parsedStudentId = int.parse(studentId);
+                                                                                //     //   print('st id is:$studentId');
+                                                                                //     //   Future.delayed(Duration(milliseconds: 100),(){
+                                                                                //     //     saveQrCodeToFile(filePath, studentId);
+                                                                                //     //   });
+                                                                                //     //   // await saveQrCodeToFile(filePath, parsedStudentId.toString());
+                                                                                //     // } catch (e) {
+                                                                                //     //   print('Error parsing student ID: $e');
+                                                                                //     // }
+                                                                                //     //
+                                                                                //     // // Save the image to the gallery
+                                                                                //     // await ImageGallerySaver.saveFile(filePath);
+                                                                                //
+                                                                                //     // Optionally, you can display a message or perform any additional actions
+                                                                                //     // after the QR code is successfully saved.
+                                                                                //     print('QR code saved successfully!');
+                                                                                //   },
+                                                                                //   icon: Icon(Icons.download),
+                                                                                // ),
+                                                                              ],
+                                                                            ),
                                                                       ),
-                                                                      Text(
-                                                                        '${respData[0]['studentWithDriverData'][index]['studentData']['id'].toString().toUpperCase()}',
-                                                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                                                      ),
+                                                                      // Text(
+                                                                      //   '${respData[0]['studentWithDriverData'][index]['studentData']['id'].toString().toUpperCase()}',
+                                                                      //   style: TextStyle(fontWeight: FontWeight.bold),
+                                                                      // ),
                                                                       Text('${respData[0]['studentWithDriverData'][index]['studentData']['class_category'].toString().toUpperCase()}',
                                                                         style: TextStyle(color: Colors.black),
                                                                       ),
                                                                       Text('${respData[0]['studentWithDriverData'][index]['studentData']['vehicle']}'),
-                                                                      Row(
-                                                                        children: [
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () async {
-                                                                              Navigator.push(
-                                                                                context,
-                                                                                MaterialPageRoute(
-                                                                                  builder: ((context) {
-                                                                                    return Center(
-                                                                                      child: RepaintBoundary(
-                                                                                        key: _qrKey,
-                                                                                        child: QrImageView(
-                                                                                          version: QrVersions.auto,
-                                                                                          data: "${respData[0]['studentWithDriverData'][index]['studentData']['id']}",
-                                                                                          backgroundColor: Colors.white,
-                                                                                          gapless: true,
-                                                                                          errorStateBuilder: (ctx, err) {
-                                                                                            return const Center(
-                                                                                              child: Text(
-                                                                                                'Something went wrong!!!',
-                                                                                                textAlign: TextAlign.center,
-                                                                                              ),
-                                                                                            );
-                                                                                          },
-                                                                                        ),
-                                                                                      ),
-                                                                                    );
-                                                                                  }),
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                            icon:
-                                                                                Icon(Icons.qr_code_2, color: Colors.black),
-                                                                          ),
-                                                                          // IconButton(
-                                                                          //   onPressed:
-                                                                          //       _captureAndSavePng,
-                                                                          //   icon:
-                                                                          //       Icon(Icons.download),
-                                                                          // ),
-                                                                          IconButton(
-                                                                            onPressed: () async {
-                                                                              print('Fff');
-                                                                              _saveLocalImage();
-                                                                              // // Get the path to the app's document directory
-                                                                              // String directory = (await getApplicationDocumentsDirectory()).path;
-                                                                              // print('sss:$directory');
-                                                                              //
-                                                                              // // Combine the directory path with a unique filename
-                                                                              // String filePath = '/storage/emulated/0/Download/qr_code.png';
-                                                                              //
-                                                                              // String studentId = respData[0]['studentWithDriverData'][index]['studentData']['id'].toString();
-                                                                              //
-                                                                              // try {
-                                                                              //   int parsedStudentId = int.parse(studentId);
-                                                                              //   print('st id is:$studentId');
-                                                                              //   Future.delayed(Duration(milliseconds: 100),(){
-                                                                              //     saveQrCodeToFile(filePath, studentId);
-                                                                              //   });
-                                                                              //   // await saveQrCodeToFile(filePath, parsedStudentId.toString());
-                                                                              // } catch (e) {
-                                                                              //   print('Error parsing student ID: $e');
-                                                                              // }
-                                                                              //
-                                                                              // // Save the image to the gallery
-                                                                              // await ImageGallerySaver.saveFile(filePath);
 
-                                                                              // Optionally, you can display a message or perform any additional actions
-                                                                              // after the QR code is successfully saved.
-                                                                              print('QR code saved successfully!');
-                                                                            },
-                                                                            icon: Icon(Icons.download),
-                                                                          ),
 
-                                                                        ],
-                                                                      ),
+                                                                      // Row(
+                                                                      //   children: [
+                                                                      //     IconButton(
+                                                                      //       onPressed:
+                                                                      //           () async {
+                                                                      //         Navigator.push(
+                                                                      //           context,
+                                                                      //           MaterialPageRoute(
+                                                                      //             builder: ((context) {
+                                                                      //               return Center(
+                                                                      //                 child: RepaintBoundary(
+                                                                      //                   key: _qrKey,
+                                                                      //                   child: QrImageView(
+                                                                      //                     version: QrVersions.auto,
+                                                                      //                     data: "${respData[0]['studentWithDriverData'][index]['studentData']['id']}",
+                                                                      //                     backgroundColor: Colors.white,
+                                                                      //                     gapless: true,
+                                                                      //                     errorStateBuilder: (ctx, err) {
+                                                                      //                       return const Center(
+                                                                      //                         child: Text(
+                                                                      //                           'Something went wrong!!!',
+                                                                      //                           textAlign: TextAlign.center,
+                                                                      //                         ),
+                                                                      //                       );
+                                                                      //                     },
+                                                                      //                   ),
+                                                                      //                 ),
+                                                                      //               );
+                                                                      //             }),
+                                                                      //           ),
+                                                                      //         );
+                                                                      //       },
+                                                                      //       icon:
+                                                                      //           Icon(Icons.qr_code_2, color: Colors.black),
+                                                                      //     ),
+                                                                      //     // IconButton(
+                                                                      //     //   onPressed:
+                                                                      //     //       _captureAndSavePng,
+                                                                      //     //   icon:
+                                                                      //     //       Icon(Icons.download),
+                                                                      //     // ),
+                                                                      //     IconButton(
+                                                                      //       onPressed: () async {
+                                                                      //         print('Fff');
+                                                                      //         _saveLocalImage();
+                                                                      //         // // Get the path to the app's document directory
+                                                                      //         // String directory = (await getApplicationDocumentsDirectory()).path;
+                                                                      //         // print('sss:$directory');
+                                                                      //         //
+                                                                      //         // // Combine the directory path with a unique filename
+                                                                      //         // String filePath = '/storage/emulated/0/Download/qr_code.png';
+                                                                      //         //
+                                                                      //         // String studentId = respData[0]['studentWithDriverData'][index]['studentData']['id'].toString();
+                                                                      //         //
+                                                                      //         // try {
+                                                                      //         //   int parsedStudentId = int.parse(studentId);
+                                                                      //         //   print('st id is:$studentId');
+                                                                      //         //   Future.delayed(Duration(milliseconds: 100),(){
+                                                                      //         //     saveQrCodeToFile(filePath, studentId);
+                                                                      //         //   });
+                                                                      //         //   // await saveQrCodeToFile(filePath, parsedStudentId.toString());
+                                                                      //         // } catch (e) {
+                                                                      //         //   print('Error parsing student ID: $e');
+                                                                      //         // }
+                                                                      //         //
+                                                                      //         // // Save the image to the gallery
+                                                                      //         // await ImageGallerySaver.saveFile(filePath);
+                                                                      //
+                                                                      //         // Optionally, you can display a message or perform any additional actions
+                                                                      //         // after the QR code is successfully saved.
+                                                                      //         print('QR code saved successfully!');
+                                                                      //       },
+                                                                      //       icon: Icon(Icons.download),
+                                                                      //     ),
+                                                                      //
+                                                                      //   ],
+                                                                      // ),
                                                                     ],
                                                                   ),
                                                                 ),
                                                               ],
                                                             ),
-                                                            subtitle: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment.end,
+                                                            subtitle: Column(
                                                               children: [
-                                                                // if (respData[0]['studentWithDriverData'][index]['driverData'] != null)
-                                                                Visibility(
-                                                                  visible: !(respData[0]['studentWithDriverData'][index]['studentData']['status'] == null ||
-                                                                      respData[0]['studentWithDriverData'][index]['studentData']['status'] == 'reached'),
-                                                                  child: TextButton(
-                                                                    onPressed: () {
-                                                                      print("liiiii");
-                                                                      print('d id :${respData[0]['studentWithDriverData'][index]['driverData']['id']}');
-                                                                      Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (context) => polylineNew(
-                                                                            driver_id: respData[0]['studentWithDriverData'][index]['driverData']['id'],
-                                                                            lat: double.parse(respData[0]['studentWithDriverData'][index]['driverData']['latitude'].toString()),
-                                                                            long: double.parse(respData[0]['studentWithDriverData'][index]['driverData']['longitude'].toString()),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                    style: TextButton.styleFrom(
-                                                                      primary: Colors.black, // This sets the text color to black
+                                                                Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                  children: [
+                                                                    Flexible(
+                                                                      child: Column(
+                                                                        children: [
+                                                                          Icon(Icons.home,color: homeicon,),
+                                                                          Text('${respData[0]['studentWithDriverData'][index]['studentData']['address']['place'].split(',')[0]}'
+                                                                            ,style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,),maxLines: 1),
+                                                                      
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          'Track Your Vehicle',
-                                                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                        Icon(
-                                                                          Icons.arrow_forward_sharp,
-                                                                          color: Colors.black, // This sets the icon color to black
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  )
+                                                                    Text('- - - - - - - - - -',style: TextStyle(color: homeicon),),
 
+
+
+                                                                    Flexible(
+                                                                      child: Column(
+                                                                        children: [
+                                                                          Icon(Icons.home_filled,color: homeicon,),
+                                                                          Text('${respData[0]['studentWithDriverData'][index]['studentData']['school']['school_name'].split(',')[0]}'
+                                                                          ,style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+                                                                        ],
+                                                                      ),
+                                                                    )
+
+                                                                  ],
                                                                 ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment.end,
+                                                                  children: [
+                                                                    // if (respData[0]['studentWithDriverData'][index]['driverData'] != null)
+                                                                    Visibility(
+                                                                      visible: !(respData[0]['studentWithDriverData'][index]['studentData']['status'] == null ||
+                                                                          respData[0]['studentWithDriverData'][index]['studentData']['status'] == 'reached'),
+                                                                      child: TextButton(
+                                                                        onPressed: () {
+                                                                          print("liiiii");
+                                                                          print('d id :${respData[0]['studentWithDriverData'][index]['driverData']['id']}');
+                                                                          Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(
+                                                                              builder: (context) => polylineNew(
+                                                                                driver_id: respData[0]['studentWithDriverData'][index]['driverData']['id'],
+                                                                                lat: double.parse(respData[0]['studentWithDriverData'][index]['driverData']['latitude'].toString()),
+                                                                                long: double.parse(respData[0]['studentWithDriverData'][index]['driverData']['longitude'].toString()),
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                        style: TextButton.styleFrom(
+                                                                          primary: Colors.black, // This sets the text color to black
+                                                                        ),
+                                                                        child: Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              'Track Your Vehicle',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                            Icon(
+                                                                              Icons.arrow_forward_sharp,
+                                                                              color: Colors.black, // This sets the icon color to black
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      )
 
+                                                                    ),
+
+                                                                  ],
+                                                                ),
                                                               ],
                                                             ),
                                                             // trailing: IconButton(

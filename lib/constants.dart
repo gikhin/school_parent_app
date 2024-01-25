@@ -23,4 +23,6 @@ Color fillColor = Color.fromRGBO(217, 217, 217, 0.84);
 
 Color addNow = Color.fromRGBO(0, 2, 112, 1);
 
+Color homeicon = Color.fromRGBO(15, 163, 177, 1);
+
 TextStyle text_style = TextStyle(fontFamily: 'Quick Sand');

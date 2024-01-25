@@ -110,6 +110,7 @@ flutter:
     - assets/login.jpg
     - assets/googleic.png
     - assets/lottie/kids.json
+    - assets/lottie/bus.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

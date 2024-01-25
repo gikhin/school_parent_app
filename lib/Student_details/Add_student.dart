@@ -454,7 +454,9 @@ class _AddStudentState extends State<AddStudent> {
               SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircleAvatar(radius: 45),
+                  CircleAvatar(
+                    child: Icon(Icons.person_outline,color: Colors.white,size: 35,),
+                    radius: 45,backgroundColor: openScanner,),
                   SizedBox(
                     width: 225,
                     child: MyTextFieldWidget(labelName: 'Name', controller: stdName, validator: () {}),

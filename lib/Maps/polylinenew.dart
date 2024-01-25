@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -22,20 +23,28 @@ class polylineNew extends StatefulWidget {
 class _polylineNewState extends State<polylineNew> {
   MapController mapController = MapController();
   PolylinePoints polylinePoints = PolylinePoints();
-  late LatLng startPoint;
-  var driverLati;
-  var driverLongi;
+  // late LatLng startPoint;
+  LatLng? driverLatiLong;
+  double? latitude;
+  double? longitude;
+  late Timer _timer;
+
 
   @override
   void initState() {
     super.initState();
     // endPoint = LatLng(widget.lat, widget.long);
-    startPoint = LatLng(widget.lat, widget.long);
-    _getCurrentLocation();
+    driverLatiLong = LatLng(widget.lat, widget.long);
+    _timer = Timer.periodic(Duration(seconds: 5),(Timer timer)async{
+      print('5 second .....');
+
+       await getDriverData();
+
+    });
+    // _getCurrentLocation();
     print("Laaaaaaat${widget.driver_id}");
     // getDriverData();
   }
-
   // List<LatLng> polylineCoordinates = [
   //   LatLng(11.27964, 75.7817756),
   //   LatLng(11.2756921, 75.7802376)
@@ -67,11 +76,18 @@ class _polylineNewState extends State<polylineNew> {
       // Check the response status
       if (response.statusCode == 200) {
         print('Qaaaaa${jsonDecode(response.body)}');
-
-        var responseData = jsonDecode(response.body);
-        print('Daaaaa${responseData[0]['longitude']}');
-        // driverLati = LatLng(responseData['data']['latitude'],responseData['data']['longitude'] );
-        print("Teeee${driverLati}");
+        Map<String,dynamic> responseData = jsonDecode(response.body);
+        // print('Daaaaa ${responseData['data'][0]['latitude']}');
+        setState(() {
+          print('sssss');
+          widget.lat = double.parse(responseData['data'][0]['latitude'].toString());
+          widget.long = double.parse(responseData['data'][0]['longitude'].toString());
+          // driverLatiLong(widget.lat,widget.long);
+          print('latitude is:${latitude} and longitude is ${longitude}');
+          // driverLatiLong = LatLng(latitude!.toDouble(), latitude!.toDouble());
+        });
+        // driverLatiLong = LatLng(responseData['data'][0]['latitude'],responseData['data'][0]['longitude'] );
+        print("Teeee${driverLatiLong}");
         // Request successful, do something with the response
         print('POST request successful');
         print('driverid${widget.driver_id}');
@@ -88,23 +104,23 @@ class _polylineNewState extends State<polylineNew> {
   }
   //end of functions.....
 
-  Future<void> _getCurrentLocation() async {
-    print('Calleed..');
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      setState(() {
-        startPoint = LatLng(position.latitude, position.longitude);
-        print("current location is: ${startPoint}");
-      });
-
-
-      // _getPolyline();
-    } catch (e) {
-      print('Error getting location: $e');
-    }
-  }
+  // Future<void> _getCurrentLocation() async {
+  //   print('Calleed..');
+  //   try {
+  //     Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high,
+  //     );
+  //     setState(() {
+  //       startPoint = LatLng(position.latitude, position.longitude);
+  //       print("current location is: ${startPoint}");
+  //     });
+  //
+  //
+  //     // _getPolyline();
+  //   } catch (e) {
+  //     print('Error getting location: $e');
+  //   }
+  // }
 
   // void _getPolyline() async {
   //   try {
@@ -128,7 +144,12 @@ class _polylineNewState extends State<polylineNew> {
   //   }
   // }
 
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _timer.cancel();
+    super.dispose();
+  }
 
 
 
@@ -141,18 +162,18 @@ class _polylineNewState extends State<polylineNew> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        leading: IconButton( color: textColor1, onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(),));
-        }, icon: Icon(Icons.menu),),
+        // leading: IconButton( color: textColor1, onPressed: () {
+        //   Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(),));
+        // }, icon: Icon(Icons.menu),),
         elevation: 0,
       ),
       body: FutureBuilder(
         future: getDriverData(),
-        builder: (context,index) {
+        builder: (context,snapshot) {
           return FlutterMap(
             mapController: mapController,
             options: MapOptions(
-              center: startPoint ?? LatLng(0, 0),
+              center: LatLng(widget.lat,widget.long) ?? LatLng(0, 0),
               zoom: 15.0,
             ),
             children: [
@@ -179,10 +200,11 @@ class _polylineNewState extends State<polylineNew> {
                   Marker(
                     width: 40.0,
                     height: 40.0,
-                    point: LatLng(widget.lat, widget.long) ?? LatLng(0, 0),
+                    point:LatLng(widget.lat,widget.long) ?? LatLng(0, 0),
                     builder: (ctx) => Container(
-                      child: Icon(
-                        Icons.location_on,
+                      child:
+                      Icon(size:35,
+                        Icons.bus_alert_sharp,
                         color: Colors.red,
                       ),
                     ),
